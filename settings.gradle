@@ -1,0 +1,1 @@
+include ':app', ':AdapterSuperior-compiler', ':AdapterSuperior-annotation', ':adaptersuperiorlib', ':testmoundle'
