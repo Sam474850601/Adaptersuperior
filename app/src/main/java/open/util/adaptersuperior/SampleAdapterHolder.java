@@ -20,7 +20,7 @@ public class SampleAdapterHolder  extends RecyclerView.ViewHolder implements IAd
     }
 
     @Override
-    public void update(int position, List list) {
+    public void update(int position, Object data, List list) {
 
     }
 }

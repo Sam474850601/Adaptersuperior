@@ -12,8 +12,8 @@ import open.util.adaptersuperior.annotation.IAdapterHolder;
 /**
  * Created by same.li on 2018/12/18
  */
-@AdapterHolder(layoutResName = "layout_test1", viewTypeIdResName = "testId1")
-public class TestHolder1 extends RecyclerView.ViewHolder  implements IAdapterHolder {
+@AdapterHolder(layoutResName = "layout_test1", model = SampleModel.class)
+public class TestHolder1 extends RecyclerView.ViewHolder  implements IAdapterHolder<SampleModel> {
 
     TextView textView;
 
@@ -22,11 +22,9 @@ public class TestHolder1 extends RecyclerView.ViewHolder  implements IAdapterHol
         textView = itemView.findViewById(R.id.text1);
     }
 
+
     @Override
-    public void update(int position, List list) {
-         Object object = list.get(position);
-         if(object instanceof SampleModel){
-             textView.setText(((SampleModel) object).text);
-         }
+    public void update(int position, SampleModel data, List<SampleModel> list) {
+        textView.setText(data.text);
     }
 }

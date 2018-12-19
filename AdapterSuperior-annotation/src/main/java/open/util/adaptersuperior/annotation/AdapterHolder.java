@@ -12,6 +12,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface AdapterHolder {
       String layoutResName ();
-      int viewType() default  0;
-      String viewTypeIdResName() default "";
+      Class<?> model() default UndefinedAdapterModel.class ;
 }

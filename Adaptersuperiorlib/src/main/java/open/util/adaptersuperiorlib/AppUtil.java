@@ -4,6 +4,8 @@ import android.app.Application;
 
 import java.lang.reflect.Method;
 
+import open.util.adaptersuperior.annotation.AdapterModel;
+
 
 /**
  * Created by same.li on 2018/12/18
@@ -37,4 +39,9 @@ public class AppUtil {
         return getApplicationContext().getResources().getIdentifier(id, defType, getPackageName());
     }
 
+
+    public int  getAdapterModelId(AdapterModel adapterModelAnn ){
+            String idResName = adapterModelAnn.viewTypeIdResName();
+            return !idResName.isEmpty() ? open.util.adaptersuperiorlib.AppUtil.getIdentifier(idResName, "id") : adapterModelAnn.viewType();
+    }
 }

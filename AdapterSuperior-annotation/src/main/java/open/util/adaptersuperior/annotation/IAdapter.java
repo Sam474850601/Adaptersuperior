@@ -7,9 +7,8 @@ import java.util.List;
  * Created by same.li on 2018/4/5.
  */
 
-public interface IAdapter  {
+public interface IAdapter {
 
-    //
     Object  getItemData(int position);
 
     List getDataSet();
@@ -17,8 +16,7 @@ public interface IAdapter  {
     void setDataSet(List itemListData);
 
 
-
-    //浠ヤ笅涓嶉渶瑕佸疄鐜般�侫dapter宸茬粡瀹炵幇
+    //以下不需要实现。Adapter已经实现
     void notifyDataSetChanged();
 
     void notifyItemChanged(int position);

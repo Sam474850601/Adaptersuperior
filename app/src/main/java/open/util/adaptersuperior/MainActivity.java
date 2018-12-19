@@ -11,17 +11,25 @@ import java.util.Vector;
 
 import open.util.adaptersuperior.annotation.IAdapter;
 import open.util.adaptersuperior.annotation.InjectAdapter;
+import open.util.adaptersuperiorlib.AdapterSuperior;
 import open.util.adaptersuperiorlib.SupportDefaultAdapter;
 import open.util.testmoundle.TestActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    @InjectAdapter(value = {TestHolder2.class})
-    IAdapter adapter = new MainActivity$$Adapter();
+    @InjectAdapter(value = {TestHolder1.class,TestHolder2.class})
+    IAdapter adapter ;
+
+    @InjectAdapter(value = {TestHolder2.class,TestHolder1.class})
+    IAdapter adapter2;
+
+    @InjectAdapter(value = {TestHolder1.class,TestHolder1.class})
+    IAdapter adapter3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AdapterSuperior.inject(this);
         setContentView(R.layout.activity_main);
         //startActivity(new Intent(this, TestActivity.class));
         RecyclerView  recyclerView = findViewById(R.id.list);

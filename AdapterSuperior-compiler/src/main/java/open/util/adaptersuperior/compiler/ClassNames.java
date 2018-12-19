@@ -33,9 +33,17 @@ public class ClassNames {
 
     public static final String APP_UTIL__GET_IDENTIFIER = "getIdentifier";
 
+    public static final String APP_UTIL__GET_ADAPTERMODELID = "getAdapterModelId";
+
+
     public static final String APPLICATION = "android.app.Application";
 
     public static final String EMPTYADAPTERHOLDER = "open.util.adaptersuperiorlib.EmptyAdapterHolder";
+
+    public static final String INJECT_HANDLER =  "AdapterSuperiorHandler";
+
+    public static final String INJECT_HANDLER_INIT =  "init";
+
 
 
 
