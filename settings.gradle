@@ -1,1 +1,1 @@
-include ':app', ':AdapterSuperior-compiler', ':AdapterSuperior-annotation', ':adaptersuperiorlib', ':testmoundle'
+include ':app', ':AdapterSuperior-compiler', ':AdapterSuperior-annotation', ':Adaptersuperiorlib', ':testmoundle'

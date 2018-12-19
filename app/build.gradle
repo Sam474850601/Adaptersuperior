@@ -32,6 +32,6 @@ dependencies {
 
     annotationProcessor project(':AdapterSuperior-compiler')
     implementation project(':testmoundle')
-    implementation project(path: ':adaptersuperiorlib')
+    implementation project(path: ':Adaptersuperiorlib')
 
 }
