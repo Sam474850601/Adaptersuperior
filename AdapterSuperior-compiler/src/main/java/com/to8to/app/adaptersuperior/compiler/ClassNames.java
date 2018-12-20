@@ -20,7 +20,7 @@ public class ClassNames {
     public static final String ADAPTER_SUPPORTDEFAULT = "com.to8to.app.adaptersuperior.lib.SupportDefaultAdapter";
 
 
-    public static final String APP_UTIL = PACKAGE_NAME+".lib.AppUtil";
+    public static final String APP_UTIL = PACKAGE_NAME+".lib.AdapterSuperiorAppUtil";
 
 
     public static final String APP_UTIL__GET_IDENTIFIER = "getIdentifier";

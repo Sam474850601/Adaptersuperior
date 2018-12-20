@@ -19,8 +19,9 @@ public class SampleAdapterHolder  extends RecyclerView.ViewHolder implements IAd
         super(itemView);
     }
 
+
     @Override
-    public void update(int position, Object data, List list) {
+    public void update(int position, Object data, List list, Object adapter) {
 
     }
 }

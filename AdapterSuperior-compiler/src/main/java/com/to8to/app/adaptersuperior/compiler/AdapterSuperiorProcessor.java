@@ -286,12 +286,15 @@ public class AdapterSuperiorProcessor extends AbstractProcessor {
                 onCreateViewHolder.addStatement("return  new $L(android.view.LayoutInflater.from(parent.getContext()).inflate($L, parent, false))", holder, writeCallGetIdMethod(annotation.layoutResName(), "layout"));
                 onCreateViewHolder.endControlFlow();
                 onBindViewHolder.addStatement("final $L tHolder = ($L)holder ", holder, holder);
-                onBindViewHolder.addStatement("final java.util.List<$L> list =  getDataSet()", modelAdapterClassName);
+                onBindViewHolder.addStatement("final java.util.List list =  getDataSet()", modelAdapterClassName);
                 onBindViewHolder.addStatement("$L data = null", modelAdapterClassName);
                 onBindViewHolder.beginControlFlow("if(null !=  list && !list.isEmpty() &&position>=0 && position<list.size())");
-                onBindViewHolder.addStatement("data = list.get(position)");
+                onBindViewHolder.addStatement("Object temp = list.get(position)");
+                onBindViewHolder.beginControlFlow("if(temp instanceof $L)", modelAdapterClassName);
+                onBindViewHolder.addStatement("data = ($L) temp", modelAdapterClassName);
                 onBindViewHolder.endControlFlow();
-                onBindViewHolder.addStatement("tHolder.update(position, data, list)");
+                onBindViewHolder.endControlFlow();
+                onBindViewHolder.addStatement("tHolder.update(position, data, list, this)");
                 onBindViewHolder.endControlFlow();
 
 

@@ -24,7 +24,7 @@ public class TestHolder1 extends RecyclerView.ViewHolder  implements IAdapterHol
 
 
     @Override
-    public void update(int position, SampleModel data, List<SampleModel> list) {
+    public void update(int position, SampleModel data, List list, Object adapter) {
         textView.setText(data.text);
     }
 }

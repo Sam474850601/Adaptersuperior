@@ -10,7 +10,7 @@ import java.lang.reflect.Method;
 /**
  * Created by same.li on 2018/12/18
  */
-public class AppUtil {
+public class AdapterSuperiorAppUtil {
     private volatile static Application application;
     private static String packageName;
 
@@ -42,6 +42,17 @@ public class AppUtil {
     }
 
 
+    public static int getViewId(String id){
+        return getApplicationContext().getResources().getIdentifier(id, "id", getPackageName());
+    }
+
+
+    public static int getLayoutId(String id){
+        return getApplicationContext().getResources().getIdentifier(id, "layout", getPackageName());
+    }
+
+
+
 
     //根据被AdapterModel注解的类获取AdapterModel
     public AdapterModel getAdapterModelAnnotation(String className){
@@ -60,7 +71,7 @@ public class AppUtil {
     //获取viewTypeId
     public static int getAdapterModelViewTypeId(AdapterModel adapterModelAnn) {
         String idResName = adapterModelAnn.viewTypeIdResName();
-        return !idResName.isEmpty() ? AppUtil.getIdentifier(idResName, "id") : adapterModelAnn.viewType();
+        return !idResName.isEmpty() ? AdapterSuperiorAppUtil.getIdentifier(idResName, "id") : adapterModelAnn.viewType();
     }
 
     public static int getViewTypeByClassName(Class<?>  adapterModeClass){

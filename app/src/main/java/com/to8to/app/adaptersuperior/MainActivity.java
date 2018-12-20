@@ -13,14 +13,8 @@ import com.to8to.app.adaptersuperior.lib.AdapterSuperior;
 
 public class MainActivity extends AppCompatActivity {
 
-    @InjectAdapter(value = {TestHolder1.class,TestHolder2.class},  parent = MyRecyclerViewAdapter.class)
+    @InjectAdapter(value = {TestHolder1.class, TestHolder3.class},  parent = MyRecyclerViewAdapter.class)
     IAdapter adapter  ;
-
-    @InjectAdapter(value = {TestHolder2.class,TestHolder1.class})
-    IAdapter adapter2;
-
-    @InjectAdapter(value = {TestHolder1.class,TestHolder1.class}, parent = MyRecyclerViewAdapter.class)
-    IAdapter adapter3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +37,25 @@ public class MainActivity extends AppCompatActivity {
         SampleModel2 sampleModel22 = new SampleModel2();
         sampleModel22.text = "1112safdas";
         vector.add(sampleModel22);
+        vector.add(new TestModelImpl("你"));
+        vector.add(new TestModelImpl("波波"));
+
+        SampleModel2  ssss = new SampleModel2();
+        ssss.text = "asdfasdfasfasdf";
+        vector.add(ssss);
         adapter.notifyDataSetChanged();
 
+    }
+
+    public static class TestModelImpl implements TestModel1{
+        String name;
+        public TestModelImpl(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String getName() {
+            return name;
+        }
     }
 }

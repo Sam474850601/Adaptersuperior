@@ -2,9 +2,9 @@ package com.to8to.app.adaptersuperior.lib;
 
 import android.support.v7.widget.RecyclerView;
 
-import java.util.List;
-
 import com.to8to.app.adaptersuperior.annotation.IAdapter;
+
+import java.util.List;
 
 /**
  * Created by same.li on 2018/12/18

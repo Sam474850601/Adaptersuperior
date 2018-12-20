@@ -23,7 +23,7 @@ public class TestHolder2 extends RecyclerView.ViewHolder implements IAdapterHold
 
 
     @Override
-    public void update(int position, SampleModel2 data, List<SampleModel2> list) {
+    public void update(int position, SampleModel2 data, List list, Object adapter) {
         textView.setText(data.text);
     }
 }
