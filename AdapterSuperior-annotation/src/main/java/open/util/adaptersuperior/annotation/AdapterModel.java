@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
  * Created by same.li on 2018/12/18
  */
 
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RetentionPolicy.CLASS)
 @Target(ElementType.TYPE)
 public @interface AdapterModel {
     int  viewType() default 0;

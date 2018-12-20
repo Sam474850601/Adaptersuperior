@@ -1,24 +1,20 @@
 package open.util.adaptersuperior;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
 import java.util.Vector;
 
 import open.util.adaptersuperior.annotation.IAdapter;
 import open.util.adaptersuperior.annotation.InjectAdapter;
 import open.util.adaptersuperiorlib.AdapterSuperior;
-import open.util.adaptersuperiorlib.SupportDefaultAdapter;
-import open.util.testmoundle.TestActivity;
 
 public class MainActivity extends AppCompatActivity {
 
     @InjectAdapter(value = {TestHolder1.class,TestHolder2.class})
-    IAdapter adapter ;
+    IAdapter adapter  ;
 
     @InjectAdapter(value = {TestHolder2.class,TestHolder1.class})
     IAdapter adapter2;
