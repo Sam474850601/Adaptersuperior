@@ -1,5 +1,8 @@
 package open.util.adaptersuperior.compiler;
 
+import javax.lang.model.SourceVersion;
+import javax.lang.model.element.Element;
+
 import com.google.auto.service.AutoService;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.JavaFile;
@@ -8,10 +11,8 @@ import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.processing.AbstractProcessor;
@@ -20,8 +21,6 @@ import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
-import javax.lang.model.SourceVersion;
-import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
@@ -44,18 +43,14 @@ public class AdapterSuperiorProcessor extends AbstractProcessor {
     private Elements mElementUtils;
     private Messager mMessager;
 
-    long startTime  = 0;
+
     @Override
     public synchronized void init(ProcessingEnvironment processingEnvironment) {
         super.init(processingEnvironment);
         mFiler = processingEnv.getFiler();
         mElementUtils = processingEnv.getElementUtils();
         mMessager = processingEnv.getMessager();
-        printInfo("ø™ º…®√Ë◊¢»Î  ≈‰∆˜====================°∑");
-        startTime = System.currentTimeMillis();
     }
-
-
 
     @Override
     public SourceVersion getSupportedSourceVersion() {
@@ -71,39 +66,33 @@ public class AdapterSuperiorProcessor extends AbstractProcessor {
         return types;
     }
 
-    int i  = 0;
-
     @Override
     public boolean process(Set<? extends TypeElement> set, RoundEnvironment roundEnvironment) {
+        printInfo("process start");
         Set<? extends Element> rootElements = roundEnvironment.getRootElements();
         for (Element element : rootElements) {
             processElement(element);
         }
-        printInfo("Ωÿ÷πƒø«∞∫ƒ ±:%f, “—ÕÍ≥…%d¥Œ…®√Ë", (System.currentTimeMillis()-startTime)/1000f, ++i);
         return false;
     }
 
-
-
-    //¥¶¿ÌÀ˘”–∫¨◊¢Ω‚class
+    //Â§ÑÁêÜÊâÄÊúâÂê´Ê≥®Ëß£class
     private void processElement(Element element) {
         final String packagename = ProcessorUtil.getClassPackage(mElementUtils, element);
         final String hostName = ProcessorUtil.getClassSimpleName(element);
 
-        final List<? extends Element> allMembers = mElementUtils.getAllMembers((TypeElement) element);
-
-        //¡Ÿ ±¥Ê¥¢–Ë“™¥¥Ω® µ¿˝µƒ  ≈‰∆˜¿‡√˚
-        final HashMap<String, ClassName> adapterClassNames = new HashMap<>();
-        //±Í ∂ «∑Ò”–  ≈‰∆˜◊¢»Îπ˝
+        List<? extends Element> allMembers = mElementUtils.getAllMembers((TypeElement) element);
         if (null != allMembers) {
-            // ±È¿˙¿‡µƒ≥…‘± Ù–‘
+            // ÈÅçÂéÜÁ±ªÁöÑÊàêÂëòÂ±ûÊÄß
             for (Element member : allMembers) {
+
                 InjectAdapter adapterHolder = member.getAnnotation(InjectAdapter.class);
                 if (null != adapterHolder) {
                     final String fieldName = ProcessorUtil.getMemberFieldName(member);
+                    printInfo("fieldName=%s", fieldName);
                     String adapterName = ProcessorUtil.obtainClassName(fieldName);
-                    //ππΩ®–¬  ≈‰∆˜√˚◊÷
                     final String newAdapterClassName = hostName + "$$" + adapterName;
+                    printInfo("newAdapterClassName=%s", newAdapterClassName);
                     TypeSpec.Builder apdaterTypeSpec = TypeSpec.classBuilder(newAdapterClassName);
                     try {
                         String parent = null;
@@ -126,89 +115,46 @@ public class AdapterSuperiorProcessor extends AbstractProcessor {
                         apdaterTypeSpec.addModifiers(Modifier.PUBLIC)
                                 .superclass(ClassName.get(packagAnName[0], packagAnName[1]));
 
-                        final ClassName viewHolderClassName = ClassName.get(ClassNames.RECYCLERVIEW, ClassNames.VIEWHOLDER);
-                        final MethodSpec.Builder onBindViewHolder = onBindViewHolder(viewHolderClassName);
+                        ClassName viewHolderClassName = ClassName.get(ClassNames.RECYCLERVIEW, ClassNames.VIEWHOLDER);
+                        MethodSpec.Builder onBindViewHolder = onBindViewHolder(viewHolderClassName);
 
 
-                        final MethodSpec.Builder onCreateViewHolder = onCreateViewHolder(viewHolderClassName);
+                        MethodSpec.Builder onCreateViewHolder = onCreateViewHolder(viewHolderClassName);
                         addCodeForOnCreateViewHolderAndOnBindViewHolder(onCreateViewHolder,onBindViewHolder,member, adapterHolder );
                         apdaterTypeSpec.addMethod(onBindViewHolder.build());
                         apdaterTypeSpec.addMethod(onCreateViewHolder.build());
                         apdaterTypeSpec.addMethod(getItemType().build());
-
-
-                        //…˙≥…  ≈‰∆˜
                         JavaFile.builder(packagename
                                 , apdaterTypeSpec.build())
                                 .build().writeTo(mFiler);
-                        printInfo("∑¢œ÷:%s÷–”–%s–Ë“™◊¢»Î", packagename+"."+hostName,fieldName);
-                        adapterClassNames.put(fieldName, ClassName.get(packagename, newAdapterClassName) );
-
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
             }
 
-
-
-            //»Áπ˚’‚∏ˆ¿‡”–…˙≥…  ≈‰∆˜£¨ƒ«√¥æÕ»•…˙≥…¥¥Ω®“˝”√∑Ω∑®
-            if(!adapterClassNames.isEmpty()){
-
-                MethodSpec.Builder builder = MethodSpec.methodBuilder(ClassNames.INJECT_HANDLER_INIT);
-                builder.addModifiers(Modifier.PUBLIC).addModifiers(Modifier.STATIC).returns(TypeName.VOID);
-                builder .addParameter(ClassName.get(packagename,hostName), "container", Modifier.FINAL);
-
-                Set<Map.Entry<String, ClassName>> entries = adapterClassNames.entrySet();
-                int i = 0;
-                for (Map.Entry<String, ClassName> entry : entries) {
-                    if(0 == i){
-                        printInfo("ø™ º…˙≥…%sµƒÀ˘”–  ≈‰∆˜◊¢»Î∑Ω∑®",packagename+"."+hostName);
-                        i++;
-                    }
-
-                    ClassName adapterClassName = entry.getValue();//  ≈‰∆˜class
-                    printInfo("…˙≥…  ≈‰∆˜£∫%s",adapterClassName.packageName()+"."+adapterClassName.simpleName());
-                    String fieldName = entry.getKey();// Ù–‘◊÷∂Œ√˚
-                    builder.addStatement("container.$L= new $L()", fieldName , adapterClassName.packageName()+"."+adapterClassName.simpleName());
-                }
-
-                final String newHandlerClassName = hostName + "$$" + ClassNames.INJECT_HANDLER;
-                TypeSpec.Builder apdaterTypeSpec = TypeSpec.classBuilder(newHandlerClassName);
-                apdaterTypeSpec.addMethod(builder.build());
-                try {
-                    JavaFile.builder(packagename
-                            , apdaterTypeSpec.build())
-                            .build()
-                            .writeTo(mFiler);
-                    printInfo("…˙≥…≥ı ºªØ∏®÷˙¿‡£∫%s",packagename+"."+newHandlerClassName);
-                } catch (Exception e) {
-                    printInfo("…˙≥…  ≈‰∆˜ µ¿˝∏®÷˙¿‡ ß∞‹£¨‘≠“Ú:"+e.getMessage());
-                }
-            }
         }
+
+
     }
 
 
 
     private MethodSpec.Builder getItemType(){
-        final String modelClass = "modelClass";
-        MethodSpec.Builder builder = MethodSpec.methodBuilder("getItemViewType")
+
+        return MethodSpec.methodBuilder("getItemViewType")
                 .addModifiers(Modifier.PUBLIC)
                 .addAnnotation(Override.class)
                 .addParameter(int.class,
                         "position", Modifier.FINAL)
                 .returns(TypeName.INT)
-                .addStatement("java.lang.Class<?>  $L = this.getItemData(position).getClass()", modelClass);
-        final String adapterModelAnn = "adapterModelAnn";
-        builder.addStatement("$L $L =  $L.getAnnotation($L.class) " , adapterModelAnn, ClassNames.ADAPTER_MODEL, modelClass, ClassNames.ADAPTER_MODEL );
-        builder .beginControlFlow("if(null != adapterModelAnn)");
-        builder.addStatement("return $L", writeCallGetAdapterModelViewTypeId(adapterModelAnn));
-        builder.endControlFlow();
-        builder.endControlFlow("return super.getItemViewType(position)");
-        return builder;
+                .addStatement("java.lang.Class<?> modelClass = this.getItemData(position).getClass()")
+                .addStatement("$L adapterModelAnn = modelClass.getAnnotation($L.class) " , ClassNames.ADAPTER_MODEL, ClassNames.ADAPTER_MODEL )
+                .beginControlFlow("if(null != adapterModelAnn)")
+                .addStatement("java.lang.String idResName =  adapterModelAnn.$L()", ClassNames.ADAPTER_MODEL_VIEWTYPE_IDRESNAME)
+                .addStatement("return null != idResName && !idResName.isEmpty()?$L.$L(idResName, \"id\"):adapterModelAnn.$L()", ClassNames.APP_UTIL, ClassNames.APP_UTIL__GET_IDENTIFIER ,ClassNames.ADAPTER_MODEL_TYPE )
+                .endControlFlow("return super.getItemViewType(position)");
     }
-
 
 
     private MethodSpec.Builder onBindViewHolder(ClassName viewHolderClassName) {
@@ -237,7 +183,7 @@ public class AdapterSuperiorProcessor extends AbstractProcessor {
                         .returns(viewHolderClassName);
     }
 
-    //ÕÍ…∆ OnCreateViewHolder OnBindViewHolder ∑Ω∑®
+    //ÂÆåÂñÑ OnCreateViewHolder OnBindViewHolder ÊñπÊ≥ï
     private   void addCodeForOnCreateViewHolderAndOnBindViewHolder(MethodSpec.Builder onCreateViewHolder, MethodSpec.Builder onBindViewHolder,  Element member,  InjectAdapter adapterHolder){
         String[] holders = null;
         try {
@@ -253,52 +199,39 @@ public class AdapterSuperiorProcessor extends AbstractProcessor {
             onCreateViewHolder.addStatement(" return null");
             return;
         }
-        final String adapterModelViewType = "adapterModelViewType";
-        final String adapterModelClass = "adapterModelClass";
-
-        onCreateViewHolder.addStatement("int $L = 0", adapterModelViewType);
-        onCreateViewHolder.addStatement("java.lang.Class<?> $L = null", adapterModelClass);
         for (int i = 0; i < holders.length; i++) {
             String holder = holders[i];
             TypeElement layoutElement = mElementUtils.getTypeElement(holder);
             if (null != layoutElement) {
                 AdapterHolder annotation = layoutElement.getAnnotation(AdapterHolder.class);
-                String modeClassName;
+
+                String modelAdapterClassName ;
+
                 try {
                     Class<?> model = annotation.model();
-                    modeClassName = model.getName();
-                } catch (MirroredTypeException e) {
-                    modeClassName = ProcessorUtil.getClass(e);
+                    modelAdapterClassName = model.getName();
+                } catch (MirroredTypeException  e) {
+                    modelAdapterClassName = ProcessorUtil.getClass(e);
                 }
 
 
-
-
-
-
+                String viewType = "0";
                 if (i == 0) {
-
-                    onCreateViewHolder.beginControlFlow("if($L == viewType)", adapterModelViewType);
+                    onCreateViewHolder.beginControlFlow("if($L == viewType)", viewType);
 
                     onBindViewHolder.beginControlFlow("if (holder instanceof $L)", holder);
                 } else {
-
-                    onCreateViewHolder.beginControlFlow("else if($L == viewType)", adapterModelViewType);
+                    onCreateViewHolder.beginControlFlow("else if($L == viewType)", viewType);
 
                     onBindViewHolder.beginControlFlow("else if (holder instanceof $L)", holder);
                 }
 
                 onCreateViewHolder.addStatement("final android.view.View layoutView = android.view.LayoutInflater.from(parent.getContext()).inflate($L, parent, false)", writeCallGetIdMethod(annotation.layoutResName(), "layout"));
-
-                onCreateViewHolder.addStatement("final $L holder =new $L(layoutView)", holder, holder);
-
-                onCreateViewHolder.addStatement("return holder");
-
                 onCreateViewHolder.endControlFlow();
 
                 onBindViewHolder.addStatement("final $L tHolder = ($L)holder ", holder, holder);
-                onBindViewHolder.addStatement("final java.util.List list =  getDataSet()");
-                onBindViewHolder.addStatement("java.lang.Object data  = null");
+                onBindViewHolder.addStatement("final java.util.List<$L> list =  getDataSet()", modelAdapterClassName);
+                onBindViewHolder.addStatement("$L data = null" ,modelAdapterClassName);
                 onBindViewHolder.beginControlFlow("if(null !=  list && !list.isEmpty())");
                 onBindViewHolder.addStatement("data = list.get(position)");
                 onBindViewHolder.endControlFlow();
@@ -313,23 +246,12 @@ public class AdapterSuperiorProcessor extends AbstractProcessor {
         return ClassNames.APP_UTIL+"."+ClassNames.APP_UTIL__GET_IDENTIFIER+"(\""+id+"\",\""+defType+"\")";
     }
 
-    public String writeCallGetAdapterModelViewTypeId(String variable){
-        return ClassNames.APP_UTIL+"."+ClassNames.APP_UTIL__GET_ADAPTERMODELID+"("+variable+")";
-    }
-
-    static final String TAG = "  ≈‰∆˜∏ﬂ ÷:";
-
     private void printInfo(String msg, Object... args) {
-        mMessager.printMessage(Diagnostic.Kind.OTHER, String.format(TAG+msg, args));
-    }
-
-
-    private void printWarning(String msg, Object... args) {
-        mMessager.printMessage(Diagnostic.Kind.WARNING, String.format(TAG+msg, args));
+        mMessager.printMessage(Diagnostic.Kind.WARNING, String.format(msg, args));
     }
 
     private void printERROR(String msg, Object... args) {
-        mMessager.printMessage(Diagnostic.Kind.ERROR, String.format(TAG+msg, args));
+        mMessager.printMessage(Diagnostic.Kind.ERROR, String.format(msg, args));
     }
 
 }
