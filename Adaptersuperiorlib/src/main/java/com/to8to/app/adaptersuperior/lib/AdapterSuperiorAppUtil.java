@@ -53,12 +53,4 @@ public class AdapterSuperiorAppUtil {
 
 
 
-
-    //获取viewTypeId
-    public static int getAdapterModelViewTypeId(AdapterModel adapterModelAnn) {
-        String idResName = adapterModelAnn.viewTypeIdResName();
-        return !idResName.isEmpty() ? AdapterSuperiorAppUtil.getIdentifier(idResName, "id") : adapterModelAnn.viewType();
-    }
-
-
 }
