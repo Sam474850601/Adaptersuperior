@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 
-import open.util.adaptersuperiorlib.AppUtil;
+import com.to8to.app.adaptersuperior.lib.AppUtil;
 
 /**
  * Created by same.li on 2018/12/18

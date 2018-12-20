@@ -1,6 +1,7 @@
 package open.util.testmoundle;
 
-import open.util.adaptersuperior.annotation.AdapterModel;
+
+import com.to8to.app.adaptersuperior.annotation.AdapterModel;
 
 /**
  * Created by same.li on 2018/12/18
