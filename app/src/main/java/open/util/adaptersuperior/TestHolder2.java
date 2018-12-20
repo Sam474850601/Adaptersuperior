@@ -12,7 +12,7 @@ import open.util.adaptersuperior.annotation.IAdapterHolder;
 /**
  * Created by same.li on 2018/12/18
  */
-@AdapterHolder(layoutResName = "layout_test2", model = SampleModel.class)
+@AdapterHolder(layoutResName = "layout_test2", model = SampleModel2.class)
 public class TestHolder2 extends RecyclerView.ViewHolder implements IAdapterHolder<SampleModel2> {
 
     TextView textView;
