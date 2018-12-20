@@ -314,24 +314,13 @@ public class AdapterSuperiorProcessor extends AbstractProcessor {
         return !viewTypeIdResName.isEmpty()?writeCallGetIdMethod(viewTypeIdResName, "id"):adapterModel.viewType()+"";
     }
 
-    public String writeCallGetViewType(String name) {
-        return ClassNames.APP_UTIL + "." + ClassNames.APP_UTIL__GET_ADAPTER_VIEWTYPEID + "(" + name + ")";
-    }
-
 
     public String writeCallGetIdMethod(String id, String defType) {
         return ClassNames.APP_UTIL + "." + ClassNames.APP_UTIL__GET_IDENTIFIER + "(\"" + id + "\",\"" + defType + "\")";
     }
 
 
-    public String writeCallAdapterModelAnnotation(String className) {
-        return ClassNames.APP_UTIL + "." + ClassNames.APP_UTIL__GET_ADAPTERMODELANNOTATION + "(" + className + ")";
-    }
 
-
-    public String writeCallGetViewTypeIdByClassName(String className) {
-        return ClassNames.APP_UTIL + "." + ClassNames.APP_UTIL__GET_VIEWTYPEBYCLASS + "(" + className + ".class)";
-    }
 
 
     static final String TAG = "AdapterSuperior:===>   ";

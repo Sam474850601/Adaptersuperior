@@ -23,7 +23,7 @@ public class TestHolder3  extends RecyclerView.ViewHolder implements IAdapterHol
 
     public TestHolder3(@NonNull View itemView) {
         super(itemView);
-        textView = itemView.findViewById(AdapterSuperiorAppUtil.getIdentifier("tv_ca","id"));
+        textView = itemView.findViewById(AdapterSuperiorAppUtil.getViewResId("tv_ca"));
     }
 
 

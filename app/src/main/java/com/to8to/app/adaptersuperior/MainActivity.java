@@ -13,7 +13,7 @@ import com.to8to.app.adaptersuperior.lib.AdapterSuperior;
 
 public class MainActivity extends AppCompatActivity {
 
-    @InjectAdapter(value = {TestHolder1.class, TestHolder3.class},  parent = MyRecyclerViewAdapter.class)
+    @InjectAdapter(value = {TestHolder1.class, TestHolder2.class, TestHolder3.class},  parent = MyRecyclerViewAdapter.class)
     IAdapter adapter  ;
 
     @Override

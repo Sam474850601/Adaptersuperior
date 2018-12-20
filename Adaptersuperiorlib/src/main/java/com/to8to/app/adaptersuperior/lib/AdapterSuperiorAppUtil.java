@@ -42,29 +42,15 @@ public class AdapterSuperiorAppUtil {
     }
 
 
-    public static int getViewId(String id){
+    public static int getViewResId(String id){
         return getApplicationContext().getResources().getIdentifier(id, "id", getPackageName());
     }
 
 
-    public static int getLayoutId(String id){
+    public static int getLayoutResId(String id){
         return getApplicationContext().getResources().getIdentifier(id, "layout", getPackageName());
     }
 
-
-
-
-    //根据被AdapterModel注解的类获取AdapterModel
-    public AdapterModel getAdapterModelAnnotation(String className){
-        try {
-            Class<?> aClass = Class.forName(className);
-            AdapterModel annotation = aClass.getAnnotation(AdapterModel.class);
-            return annotation;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return  null;
-    }
 
 
 
@@ -74,11 +60,5 @@ public class AdapterSuperiorAppUtil {
         return !idResName.isEmpty() ? AdapterSuperiorAppUtil.getIdentifier(idResName, "id") : adapterModelAnn.viewType();
     }
 
-    public static int getViewTypeByClassName(Class<?>  adapterModeClass){
-        AdapterModel adapterModelAnnotation = adapterModeClass.getAnnotation(AdapterModel.class);
-        if(null != adapterModelAnnotation){
-            return  getAdapterModelViewTypeId(adapterModelAnnotation);
-        }
-        return  0;
-    }
+
 }
