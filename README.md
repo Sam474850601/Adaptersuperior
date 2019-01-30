@@ -3,17 +3,9 @@
 >这是一个**RecyclerView.Adapter**组件库, 可以快速自动化构造一个干净有效可用**RecyclerView.Adapter**。通常绘制的**RecyclerView**列表视图过程中，编写的**RecyclerView.Adapter**大部分代码基本可以视为‘冗余’重复的代码，且又不能复用导致浪费一半的开发时间。通过使用这个组件则可以很好节省这部分时间。它是通过依赖注入方式来使用，**RecyclerView.Adapter**++由编译器自动生成，不再不需要开发人员去编写++，这就意味着直接抹去编写**RecyclerView.Adapter**需要的时间，以及产生的**BUG**数。开发人员只需要根据需求实现**RecyclerView.ViewHolder**这部分代码。并且**RecyclerView.ViewHolder**是通过++组合方式++构建自动化生成的**RecyclerView.Adapter**. 从而使得可复用，解耦脱离**RecyclerView.Adapter**的业务依赖编码.
 
 
-## 产库地址以及源码
 
-### Git 产库地址
-> http://repo.we.com/same.li/adaptersuperior
 
-### 稳定发布
->implementation 'com.to8to.app:adaptersuperior-lib:1.1.0'
 
->implementation 'com.to8to.app:adaptersuperior-annotation:1.2.0'
-
->annotationProcessor 'com.to8to.app:adaptersuperior-compiler:1.2.0'
 
 ## 演示（详细请参考源码演示）
 
