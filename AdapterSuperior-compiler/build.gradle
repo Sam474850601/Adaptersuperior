@@ -1,0 +1,28 @@
+apply plugin: 'java-library'
+apply plugin: 'maven'
+
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.squareup:javapoet:1.7.0'
+    compile 'com.google.auto.service:auto-service:1.0-rc2'
+    implementation 'com.to8to.app:adaptersuperior-annotation:1.2.0'
+    //compile project(':AdapterSuperior-annotation')
+}
+
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            pom.groupId= rootProject.ext.repo.groupId
+            pom.artifactId = "adaptersuperior-compiler"
+            pom.version = "1.2.0"
+            repository(url: rootProject.ext.repo.url) {
+                authentication(userName: rootProject.ext.repo.userName, password: rootProject.ext.repo.userPwd)
+            }
+        }
+    }
+}
+
+sourceCompatibility = "1.7"
+targetCompatibility = "1.7"

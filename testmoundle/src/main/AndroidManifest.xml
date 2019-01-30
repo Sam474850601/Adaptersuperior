@@ -1,0 +1,7 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.to8to.app.adaptersuperior.testmoudle" >
+
+    <application>
+        <activity android:name=".CustomAdapterActivity" />
+    </application>
+</manifest>

@@ -1,0 +1,25 @@
+apply plugin: 'java-library'
+
+apply plugin: 'maven'
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            pom.groupId= rootProject.ext.repo.groupId
+            pom.artifactId = "adaptersuperior-annotation"
+            pom.version = "1.2.0"
+            repository(url: rootProject.ext.repo.url) {
+                authentication(userName: rootProject.ext.repo.userName, password: rootProject.ext.repo.userPwd)
+            }
+        }
+    }
+}
+
+
+sourceCompatibility = "1.7"
+targetCompatibility = "1.7"

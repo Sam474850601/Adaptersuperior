@@ -1,0 +1,44 @@
+apply plugin: 'com.android.library'
+apply plugin: 'maven'
+android {
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
+    defaultConfig {
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            pom.groupId= rootProject.ext.repo.groupId
+            pom.artifactId = "adaptersuperior-lib"
+            pom.version = "1.1.0"
+            repository(url: rootProject.ext.repo.url) {
+                authentication(userName: rootProject.ext.repo.userName, password: rootProject.ext.repo.userPwd)
+            }
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+    compileOnly rootProject.ext.dependencies.appcompatv7
+    compileOnly rootProject.ext.dependencies.recyclerview
+    compileOnly rootProject.ext.to8to.adaptersuperiorannotation
+}
